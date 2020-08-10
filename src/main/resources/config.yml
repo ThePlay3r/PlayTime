@@ -1,0 +1,95 @@
+# Big thanks and love for using my plugins! ^^
+
+#|--------------------------------------------------------------------------------------------------------------------|#
+# Plugin: PlayTime
+# Author: https://www.mc-market.org/members/89497/ | https://www.spigotmc.org/members/radekjenejlepsi.227786/
+# Description: Simple plugin for players to interact with.
+# Dependencies:
+#   -> PLJRApi
+#   -> MySQL
+#   -> PlaceholderAPI<Optional> (https://www.spigotmc.org/resources/placeholderapi.6245/)
+#|--------------------------------------------------------------------------------------------------------------------|#
+
+###############\
+# MySQL Setup ##############################################################################################\
+############### This is the most important part, as the plugin can not work without proper MySQL Database. # \
+              ##############################################################################################  \
+mysql:
+  enabled: false #-> Should we use this database instead of the one configured in PLJRApi config.yml?
+  host: "127.0.0.1"
+  port: "3306"
+  database: "db"
+  username: "root"
+  password: ""
+#|--------------------------------------------------------------------------------------------------------------------|#
+
+##################\
+# Settings Setup #############################################################\
+################## Here, you can enable or disable functions of this plugin. # \
+                 #############################################################  \
+settings:
+  afk-hook-cmi: false # Should we subtract the AFK time from CMI?
+#|--------------------------------------------------------------------------------------------------------------------|#
+
+###############\
+# Menus Setup ###########################################################\
+############### Here, you can customize the looks of all in-game menus. # \
+              ###########################################################  \
+time-menu:
+  title: "§a§lPlayTime v${project.version}"
+  background:
+    type: "BLACK_STAINED_GLASS_PANE"
+    name: "§0"
+    amount: 1
+    lore:
+      - "§r"
+  head:
+    name: "§e%player"
+    lore:
+      - "§7Time of §e%player§7."
+  yesterday:
+    type: "BIRCH_SIGN"
+    name: "§eYesterday"
+    amount: 1
+    lore:
+      "§8► §7%time"
+  daily:
+    type: "OAK_SIGN"
+    name: "§eToday"
+    amount: 1
+    lore:
+      "§8► §7%time"
+  all:
+    type: "CLOCK"
+    name: "§eAll"
+    amount: 1
+    lore:
+      "§8► §7%time"
+  weekly:
+    type: "JUNGLE_SIGN"
+    name: "§eWeekly"
+    amount: 1
+    lore:
+      "§8► §7%time"
+  monthly:
+    type: "ACACIA_SIGN"
+    name: "§eMonthly"
+    amount: 1
+    lore:
+      "§8► §7%time"
+#|--------------------------------------------------------------------------------------------------------------------|#
+
+##############\
+# Lang Setup ################################################################\
+############## Here, you can customize messages, send by the plugin itself. # \
+             ################################################################  \
+help:
+  - ""
+  - "§a§lPlayTime Help v${project.version}"
+  - ""
+  - "§e/playtime <player> §8» §fOpens GUI with player's information."
+  - "§e/playtime help §8» §fDisplays this message."
+
+lang:
+  NO_CONSOLE: "§a§lPlayTime §8» §fThis command is for in-game use only!"
+#|--------------------------------------------------------------------------------------------------------------------|#
