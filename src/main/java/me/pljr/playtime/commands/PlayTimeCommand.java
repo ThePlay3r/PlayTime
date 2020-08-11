@@ -25,6 +25,7 @@ public class PlayTimeCommand extends CommandUtil implements CommandExecutor {
         // /playtime
         if (args.length == 0){
             TimeMenu.open(player, player);
+            return true;
         }
 
 

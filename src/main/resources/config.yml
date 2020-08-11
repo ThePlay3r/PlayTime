@@ -52,31 +52,31 @@ time-menu:
     name: "§eYesterday"
     amount: 1
     lore:
-      "§8► §7%time"
+      - "§8► §7%time"
   daily:
     type: "OAK_SIGN"
     name: "§eToday"
     amount: 1
     lore:
-      "§8► §7%time"
+      - "§8► §7%time"
   all:
     type: "CLOCK"
     name: "§eAll"
     amount: 1
     lore:
-      "§8► §7%time"
+      - "§8► §7%time"
   weekly:
     type: "JUNGLE_SIGN"
     name: "§eWeekly"
     amount: 1
     lore:
-      "§8► §7%time"
+      - "§8► §7%time"
   monthly:
     type: "ACACIA_SIGN"
     name: "§eMonthly"
     amount: 1
     lore:
-      "§8► §7%time"
+      - "§8► §7%time"
 #|--------------------------------------------------------------------------------------------------------------------|#
 
 ##############\
@@ -89,6 +89,7 @@ help:
   - ""
   - "§e/playtime <player> §8» §fOpens GUI with player's information."
   - "§e/playtime help §8» §fDisplays this message."
+  - ""
 
 lang:
   NO_CONSOLE: "§a§lPlayTime §8» §fThis command is for in-game use only!"

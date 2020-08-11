@@ -32,11 +32,11 @@ public class TimeMenu implements Listener {
         }
 
         inventory.setItem(4, ItemStackUtil.replaceLore(GuiManager.createHead(requestedName, CfgTimeMenu.headName.replace("%player", requestedName)), "%player", requestedName));
-        inventory.setItem(10, ItemStackUtil.replaceLore(CfgTimeMenu.yesterday, "%time", FormatUtil.formatTime(corePlayer.getYesterday())));
-        inventory.setItem(11, ItemStackUtil.replaceLore(CfgTimeMenu.daily, "%time", FormatUtil.formatTime(corePlayer.getDaily())));
-        inventory.setItem(12, ItemStackUtil.replaceLore(CfgTimeMenu.all, "%time", FormatUtil.formatTime(corePlayer.getAll())));
-        inventory.setItem(13, ItemStackUtil.replaceLore(CfgTimeMenu.weekly, "%time", FormatUtil.formatTime(corePlayer.getWeekly())));
-        inventory.setItem(14, ItemStackUtil.replaceLore(CfgTimeMenu.monthly, "%time", FormatUtil.formatTime(corePlayer.getMontly())));
+        inventory.setItem(11, ItemStackUtil.replaceLore(CfgTimeMenu.yesterday, "%time", FormatUtil.formatTime(corePlayer.getYesterday() / 1000)));
+        inventory.setItem(12, ItemStackUtil.replaceLore(CfgTimeMenu.daily, "%time", FormatUtil.formatTime(corePlayer.getDaily() / 1000)));
+        inventory.setItem(13, ItemStackUtil.replaceLore(CfgTimeMenu.all, "%time", FormatUtil.formatTime(corePlayer.getAll() / 1000)));
+        inventory.setItem(14, ItemStackUtil.replaceLore(CfgTimeMenu.weekly, "%time", FormatUtil.formatTime(corePlayer.getWeekly() / 1000)));
+        inventory.setItem(15, ItemStackUtil.replaceLore(CfgTimeMenu.monthly, "%time", FormatUtil.formatTime(corePlayer.getMontly() / 1000)));
 
         player.openInventory(inventory);
     }

@@ -20,7 +20,7 @@ public class CfgTimeMenu {
     public static ItemStack monthly;
 
     public static void load(){
-        CfgTimeMenu.title = config.getString("time-menu.tite");
+        CfgTimeMenu.title = config.getString("time-menu.title");
         CfgTimeMenu.background = config.getSimpleItemStack("time-menu.background");
         CfgTimeMenu.headName = config.getString("time-menu.head.name");
         CfgTimeMenu.headLore = config.getStringList("time-menu.head.lore");

@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class QueryManager {
@@ -29,7 +33,7 @@ public class QueryManager {
 
             Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELEC * FROM playtime_players WHERE uuid=?"
+                    "SELECT * FROM playtime_players WHERE uuid=?"
             );
             preparedStatement.setString(1, uuid.toString());
             ResultSet results = preparedStatement.executeQuery();
@@ -38,7 +42,7 @@ public class QueryManager {
                 daily = results.getLong("daily");
                 weekly = results.getLong("weekly");
                 monthly = results.getLong("monthly");
-                all = results.getLong("all");
+                all = results.getLong("alltime");
             }
             dataSource.close(connection, preparedStatement, results);
             PlayerManager.setCorePlayer(uuid, new CorePlayer(yesterday, daily, weekly, monthly, all));
@@ -69,6 +73,107 @@ public class QueryManager {
         });
     }
 
+    public void updateDates(){
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM playtime_dates"
+            );
+            ResultSet results = preparedStatement.executeQuery();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date currentDate = new Date();
+
+            Calendar cDaily = Calendar.getInstance();
+            cDaily.setTime(currentDate);
+            cDaily.add(Calendar.DATE, 1);
+            Calendar cWeekly = Calendar.getInstance();
+            cWeekly.setTime(currentDate);
+            cWeekly.add(Calendar.DATE, 7);
+            Calendar cMontlhy = Calendar.getInstance();
+            cMontlhy.setTime(currentDate);
+            cMontlhy.add(Calendar.DATE, 30);
+
+            String daily;
+            String weekly;
+            String monthly;
+
+            if (results.next()){
+                Date dailyDate = sdf.parse(results.getString("daily"));
+                Date weeklyDate = sdf.parse(results.getString("weekly"));
+                Date monthlyDate = sdf.parse(results.getString("monthly"));
+                if (currentDate.compareTo(dailyDate) >= 0){
+                    daily = sdf.format(cDaily.getTime());
+
+                    Connection update = dataSource.getConnection();
+                    PreparedStatement updateStatement = update.prepareStatement(
+                            "UPDATE playtime_players SET yesterday=daily"
+                    );
+                    updateStatement.executeUpdate();
+                    dataSource.close(update, updateStatement, null);
+
+                    Connection clear = dataSource.getConnection();
+                    PreparedStatement clearStatement = clear.prepareStatement(
+                            "UPDATE playtime_players SET daily=0"
+                    );
+                    clearStatement.executeUpdate();
+                    dataSource.close(clear, clearStatement, null);
+                }else{
+                    daily = sdf.format(dailyDate.getTime());
+                }
+                if (currentDate.compareTo(weeklyDate) >= 0){
+                    weekly = sdf.format(cWeekly.getTime());
+
+                    Connection clear = dataSource.getConnection();
+                    PreparedStatement clearStatement = clear.prepareStatement(
+                            "UPDATE playtime_players SET weekly=0"
+                    );
+                    clearStatement.executeUpdate();
+                    dataSource.close(clear, clearStatement, null);
+                }else{
+                    weekly = sdf.format(weeklyDate.getTime());
+                }
+                if (currentDate.compareTo(monthlyDate) >= 0){
+                    monthly = sdf.format(cMontlhy);
+
+                    Connection clear = dataSource.getConnection();
+                    PreparedStatement clearStatement = clear.prepareStatement(
+                            "UPDATE playtime_players SET monthly=0"
+                    );
+                    clearStatement.executeUpdate();
+                    dataSource.close(clear, clearStatement, null);
+                }else{
+                    monthly = sdf.format(monthlyDate.getTime());
+                }
+            }else{
+                daily = sdf.format(cDaily.getTime());
+                weekly = sdf.format(cWeekly.getTime());
+                monthly = sdf.format(cMontlhy.getTime());
+            }
+            dataSource.close(connection, preparedStatement, results);
+
+            Connection remove = dataSource.getConnection();
+            PreparedStatement removeStatement = remove.prepareStatement(
+                    "DELETE FROM playtime_dates"
+            );
+            removeStatement.executeUpdate();
+            dataSource.close(remove, removeStatement, null);
+
+            Connection insert = dataSource.getConnection();
+            PreparedStatement insertStatement = insert.prepareStatement(
+                    "INSERT INTO playtime_dates VALUES (?,?,?)"
+            );
+            insertStatement.setString(1, daily);
+            insertStatement.setString(2, weekly);
+            insertStatement.setString(3, monthly);
+            insertStatement.executeUpdate();
+            dataSource.close(insert, insertStatement, null);
+
+        }catch (SQLException | ParseException e){
+            e.printStackTrace();
+        }
+    }
+
     public void setupTables(){
         try {
             Connection connection = dataSource.getConnection();
@@ -79,10 +184,20 @@ public class QueryManager {
                             "daily bigint(20) NOT NULL," +
                             "weekly bigint(20) NOT NULL," +
                             "monthly bigint(20) NOT NULL," +
-                            "all bigint(20) NOT NULL);"
+                            "alltime bigint(20) NOT NULL);"
             );
             preparedStatement.executeUpdate();
             dataSource.close(connection, preparedStatement, null);
+
+            Connection connection2 = dataSource.getConnection();
+            PreparedStatement preparedStatement2 = connection2.prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS playtime_dates (" +
+                            "daily char(10) NOT NULL," +
+                            "weekly char(10) NOT NULL," +
+                            "monthly char(10) NOT NULL);"
+            );
+            preparedStatement2.executeUpdate();
+            dataSource.close(connection2, preparedStatement2, null);
         }catch (SQLException e){
             e.printStackTrace();
         }

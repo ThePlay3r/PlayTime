@@ -9,6 +9,7 @@ import me.pljr.playtime.listeners.CMIAfkEnterListener;
 import me.pljr.playtime.listeners.CMIAfkLeaveListener;
 import me.pljr.playtime.listeners.PlayerQuitListener;
 import me.pljr.playtime.managers.QueryManager;
+import me.pljr.playtime.menus.TimeMenu;
 import me.pljr.pljrapi.PLJRApi;
 import me.pljr.pljrapi.database.DataSource;
 import me.pljr.pljrapi.managers.ConfigManager;
@@ -55,6 +56,7 @@ public final class PlayTime extends JavaPlugin {
         DataSource dataSource = DataSource.getFromConfig(configManager);
         queryManager = new QueryManager(dataSource);
         queryManager.setupTables();
+        queryManager.updateDates();
     }
 
     private void setupCommands(){
@@ -64,6 +66,7 @@ public final class PlayTime extends JavaPlugin {
     private void setupListeners(){
         getServer().getPluginManager().registerEvents(new AsyncPlayerPreLoginListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new TimeMenu(), this);
         if (CfgSettings.afkHookCmi){
             getServer().getPluginManager().registerEvents(new CMIAfkEnterListener(), this);
             getServer().getPluginManager().registerEvents(new CMIAfkLeaveListener(), this);
