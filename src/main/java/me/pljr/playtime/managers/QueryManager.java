@@ -45,14 +45,64 @@ public class QueryManager {
                 all = results.getLong("alltime");
             }
             dataSource.close(connection, preparedStatement, results);
-            PlayerManager.setCorePlayer(uuid, new CorePlayer(yesterday, daily, weekly, monthly, all));
+            PlayTime.getPlayerManager().setCorePlayer(uuid, new CorePlayer(yesterday, daily, weekly, monthly, all));
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void loadPlayer(UUID uuid){
+        Bukkit.getScheduler().runTaskAsynchronously(instance, ()->{
+            try {
+                long yesterday = 0;
+                long daily = 0;
+                long weekly = 0;
+                long monthly = 0;
+                long all = 0;
+
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM playtime_players WHERE uuid=?"
+                );
+                preparedStatement.setString(1, uuid.toString());
+                ResultSet results = preparedStatement.executeQuery();
+                if (results.next()){
+                    yesterday = results.getLong("yesterday");
+                    daily = results.getLong("daily");
+                    weekly = results.getLong("weekly");
+                    monthly = results.getLong("monthly");
+                    all = results.getLong("alltime");
+                }
+                dataSource.close(connection, preparedStatement, results);
+                PlayTime.getPlayerManager().setCorePlayer(uuid, new CorePlayer(yesterday, daily, weekly, monthly, all));
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void savePlayerSync(UUID uuid){
+        CorePlayer corePlayer = PlayTime.getPlayerManager().getCorePlayer(uuid);
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "REPLACE INTO playtime_players VALUES (?,?,?,?,?,?)"
+            );
+            preparedStatement.setString(1, uuid.toString());
+            preparedStatement.setLong(2, corePlayer.getYesterday());
+            preparedStatement.setLong(3, corePlayer.getDaily());
+            preparedStatement.setLong(4, corePlayer.getWeekly());
+            preparedStatement.setLong(5, corePlayer.getMontly());
+            preparedStatement.setLong(6, corePlayer.getAll());
+            preparedStatement.executeUpdate();
+            dataSource.close(connection, preparedStatement, null);
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
 
     public void savePlayer(UUID uuid){
-        CorePlayer corePlayer = PlayerManager.getCorePlayer(uuid);
+        CorePlayer corePlayer = PlayTime.getPlayerManager().getCorePlayer(uuid);
         Bukkit.getScheduler().runTaskAsynchronously(instance, ()->{
             try {
                 Connection connection = dataSource.getConnection();

@@ -1,6 +1,6 @@
 package me.pljr.playtime.utils;
 
-import me.pljr.playtime.managers.PlayerManager;
+import me.pljr.playtime.PlayTime;
 import me.pljr.playtime.objects.CorePlayer;
 
 import java.util.UUID;
@@ -8,7 +8,7 @@ import java.util.UUID;
 public class TimeUtil {
 
     public static void update(UUID uuid){
-        CorePlayer corePlayer = PlayerManager.getCorePlayer(uuid);
+        CorePlayer corePlayer = PlayTime.getPlayerManager().getCorePlayer(uuid);
         long daily = corePlayer.getDaily();
         long weekly = corePlayer.getWeekly();
         long monthly = corePlayer.getMontly();

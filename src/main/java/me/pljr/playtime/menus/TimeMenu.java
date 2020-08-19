@@ -1,7 +1,7 @@
 package me.pljr.playtime.menus;
 
+import me.pljr.playtime.PlayTime;
 import me.pljr.playtime.config.CfgTimeMenu;
-import me.pljr.playtime.managers.PlayerManager;
 import me.pljr.playtime.objects.CorePlayer;
 import me.pljr.playtime.utils.TimeUtil;
 import me.pljr.pljrapi.utils.FormatUtil;
@@ -23,7 +23,7 @@ public class TimeMenu implements Listener {
         UUID uuid = requested.getUniqueId();
         TimeUtil.update(uuid);
 
-        CorePlayer corePlayer = PlayerManager.getCorePlayer(uuid);
+        CorePlayer corePlayer = PlayTime.getPlayerManager().getCorePlayer(uuid);
         Inventory inventory = Bukkit.createInventory(player, 3*9, CfgTimeMenu.title);
 
         for (int i = 0; i<27; i++){

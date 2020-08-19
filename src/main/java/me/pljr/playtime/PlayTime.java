@@ -8,16 +8,19 @@ import me.pljr.playtime.listeners.AsyncPlayerPreLoginListener;
 import me.pljr.playtime.listeners.CMIAfkEnterListener;
 import me.pljr.playtime.listeners.CMIAfkLeaveListener;
 import me.pljr.playtime.listeners.PlayerQuitListener;
+import me.pljr.playtime.managers.PlayerManager;
 import me.pljr.playtime.managers.QueryManager;
 import me.pljr.playtime.menus.TimeMenu;
 import me.pljr.pljrapi.PLJRApi;
 import me.pljr.pljrapi.database.DataSource;
 import me.pljr.pljrapi.managers.ConfigManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PlayTime extends JavaPlugin {
     private static PlayTime instance;
+    private static PlayerManager playerManager;
     private static ConfigManager configManager;
     private static QueryManager queryManager;
 
@@ -27,6 +30,7 @@ public final class PlayTime extends JavaPlugin {
         if (!setupPLJRApi()) return;
         instance = this;
         setupConfig();
+        setupManagers();
         setupDatabase();
         setupListeners();
         setupCommands();
@@ -52,11 +56,18 @@ public final class PlayTime extends JavaPlugin {
         CfgTimeMenu.load();
     }
 
+    private void setupManagers(){
+        playerManager = new PlayerManager();
+    }
+
     private void setupDatabase(){
         DataSource dataSource = DataSource.getFromConfig(configManager);
         queryManager = new QueryManager(dataSource);
         queryManager.setupTables();
         queryManager.updateDates();
+        for (Player player : Bukkit.getOnlinePlayers()){
+            queryManager.loadPlayer(player.getUniqueId());
+        }
     }
 
     private void setupCommands(){
@@ -76,17 +87,21 @@ public final class PlayTime extends JavaPlugin {
     public static PlayTime getInstance() {
         return instance;
     }
-
     public static QueryManager getQueryManager() {
         return queryManager;
     }
-
     public static ConfigManager getConfigManager() {
         return configManager;
+    }
+    public static PlayerManager getPlayerManager() {
+        return playerManager;
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        for (Player player : Bukkit.getOnlinePlayers()){
+            queryManager.savePlayerSync(player.getUniqueId());
+        }
     }
 }

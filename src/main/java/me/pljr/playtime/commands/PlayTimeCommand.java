@@ -29,7 +29,7 @@ public class PlayTimeCommand extends CommandUtil implements CommandExecutor {
         }
 
 
-        if (args.length == 1) {
+        else if (args.length == 1) {
             // /playtime help
             if (args[0].equalsIgnoreCase("help") && checkPerm(player, "playtime.help")){
                 sendHelp(player, CfgLang.help);
@@ -42,7 +42,9 @@ public class PlayTimeCommand extends CommandUtil implements CommandExecutor {
             return true;
         }
 
-        sendHelp(player, CfgLang.help);
+        if (checkPerm(player, "playtime.help")){
+            sendHelp(player, CfgLang.help);
+        }
         return false;
     }
 }
