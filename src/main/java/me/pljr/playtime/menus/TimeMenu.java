@@ -4,7 +4,6 @@ import me.pljr.playtime.config.CfgTimeMenu;
 import me.pljr.playtime.managers.PlayerManager;
 import me.pljr.playtime.objects.CorePlayer;
 import me.pljr.playtime.utils.TimeUtil;
-import me.pljr.pljrapi.managers.GuiManager;
 import me.pljr.pljrapi.utils.FormatUtil;
 import me.pljr.pljrapi.utils.ItemStackUtil;
 import org.bukkit.Bukkit;
@@ -31,7 +30,7 @@ public class TimeMenu implements Listener {
             inventory.setItem(i, CfgTimeMenu.background);
         }
 
-        inventory.setItem(4, ItemStackUtil.replaceLore(GuiManager.createHead(requestedName, CfgTimeMenu.headName.replace("%player", requestedName)), "%player", requestedName));
+        inventory.setItem(4, ItemStackUtil.replaceLore(ItemStackUtil.createHead(requestedName, CfgTimeMenu.headName.replace("%player", requestedName), 1), "%player", requestedName));
         inventory.setItem(11, ItemStackUtil.replaceLore(CfgTimeMenu.yesterday, "%time", FormatUtil.formatTime(corePlayer.getYesterday() / 1000)));
         inventory.setItem(12, ItemStackUtil.replaceLore(CfgTimeMenu.daily, "%time", FormatUtil.formatTime(corePlayer.getDaily() / 1000)));
         inventory.setItem(13, ItemStackUtil.replaceLore(CfgTimeMenu.all, "%time", FormatUtil.formatTime(corePlayer.getAll() / 1000)));
