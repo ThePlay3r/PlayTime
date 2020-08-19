@@ -29,6 +29,7 @@ mysql:
                  #############################################################  \
 settings:
   afk-hook-cmi: false # Should we subtract the AFK time from CMI?
+  auto-update: 600 # How often should we update players and check for date?
 #|--------------------------------------------------------------------------------------------------------------------|#
 
 ###############\

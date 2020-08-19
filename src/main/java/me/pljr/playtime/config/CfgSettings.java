@@ -7,8 +7,10 @@ public class CfgSettings {
     private static final ConfigManager config = PlayTime.getConfigManager();
 
     public static boolean afkHookCmi;
+    public static int autoUpdate;
 
     public static void load(){
         CfgSettings.afkHookCmi = config.getBoolean("settings.afk-hook-cmi");
+        CfgSettings.autoUpdate = config.getInt("settings.auto-update");
     }
 }

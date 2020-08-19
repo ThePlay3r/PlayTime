@@ -11,6 +11,7 @@ import me.pljr.playtime.listeners.PlayerQuitListener;
 import me.pljr.playtime.managers.PlayerManager;
 import me.pljr.playtime.managers.QueryManager;
 import me.pljr.playtime.menus.TimeMenu;
+import me.pljr.playtime.utils.TimeUtil;
 import me.pljr.pljrapi.PLJRApi;
 import me.pljr.pljrapi.database.DataSource;
 import me.pljr.pljrapi.managers.ConfigManager;
@@ -54,6 +55,7 @@ public final class PlayTime extends JavaPlugin {
         CfgLang.load();
         CfgSettings.load();
         CfgTimeMenu.load();
+        TimeUtil.startAutoUpdate(this, CfgSettings.autoUpdate);
     }
 
     private void setupManagers(){
