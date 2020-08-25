@@ -36,5 +36,6 @@ public class TimeUtil {
         corePlayer.setWeekly(weekly+addTime);
         corePlayer.setMontly(monthly+addTime);
         corePlayer.setAll(all+addTime);
+        PlayTime.getPlayerManager().setCorePlayer(uuid, corePlayer);
     }
 }

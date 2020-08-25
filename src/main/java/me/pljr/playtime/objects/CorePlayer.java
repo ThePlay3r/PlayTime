@@ -1,7 +1,7 @@
 package me.pljr.playtime.objects;
 
 public class CorePlayer {
-    private long initialized;
+    private final long initialized;
     private long yesterday;
     private long daily;
     private long weekly;

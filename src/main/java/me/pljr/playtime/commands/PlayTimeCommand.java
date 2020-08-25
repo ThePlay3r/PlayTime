@@ -16,7 +16,7 @@ public class PlayTimeCommand extends CommandUtil implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)){
-            sender.sendMessage(CfgLang.lang.get(Lang.NO_CONSOLE));
+            sendMessage(sender, CfgLang.lang.get(Lang.NO_CONSOLE));
             return false;
         }
         Player player = (Player) sender;
