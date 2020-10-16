@@ -4,6 +4,7 @@ main: me.pljr.playtime.PlayTime
 api-version: 1.13
 authors: [9hx]
 depend: [PLJRApi]
+softdepend: [CMI]
 description: Simpe plugin for calculating playtime of players.
 commands:
   playtime:
