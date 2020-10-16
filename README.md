@@ -9,6 +9,7 @@ Spigot plugin for calculating playtime of players.
 ## 📋 Features
 - MySQL Support
 - Cross-Server
+- Multiple times (`Yesterday` | `Daily` | `Weekly` | `Monthly` | `All`)
 - AFK Time Substraction ([`CMI`](https://www.spigotmc.org/resources/cmi-270-commands-insane-kits-portals-essentials-economy-mysql-sqlite-much-more.3742/))
 - Huge Configuration
 
